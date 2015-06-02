@@ -37,7 +37,8 @@ requirejs(['define-uniqueid'], function(defineUniqueId) {
 ```html
 <script src="/bower_components/define-uniqueid/uniqid.js"></script>
 <script>
-defineUniqueId(Object);
-({}).uniqueId;
+defineUniqueId(HTMLElement);
+var div = document.createElement('div');
+div.uniqueId;
 </script>
 ```
