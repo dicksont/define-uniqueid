@@ -5,7 +5,8 @@
   "main": "uniqid.js",
   "dependencies": {},
   "devDependencies": {
-    "requirejs": "~2.1.18"
+    "requirejs": "~2.1.18",
+    "mocha": "~2.2.4"
   },
   "scripts": {
     "test": "mocha spec/spec.js"
