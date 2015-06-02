@@ -6,6 +6,17 @@ Define-uniqueid is a sequential, unique id generator that can be attached to arb
 
 ## Usage
 
+### Browser
+
+```html
+<script src="/bower_components/define-uniqueid/uniqid.js"></script>
+<script>
+defineUniqueId(HTMLElement);
+var div = document.createElement('div');
+div.uniqueId;
+</script>
+```
+
 ### CommonJS / Node
 ```javascript
 
@@ -31,15 +42,4 @@ requirejs(['define-uniqueid'], function(defineUniqueId) {
   ({}).uniqueId;
 });
 
-```
-
-### Browser
-
-```html
-<script src="/bower_components/define-uniqueid/uniqid.js"></script>
-<script>
-defineUniqueId(HTMLElement);
-var div = document.createElement('div');
-div.uniqueId;
-</script>
 ```
