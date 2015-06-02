@@ -2,6 +2,7 @@
 
 Define-uniqueid is a sequential, unique id generator that can be attached to arbitrary object prototypes.
 
+[License](LICENSE)
 
 ## Usage
 
