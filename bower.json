@@ -1,0 +1,25 @@
+{
+  "name": "define-uniqueid",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dicksont/define-uniqueid",
+  "authors": [
+    "Dickson Tam <dicksont650@gmail.com>"
+  ],
+  "description": "uniqueid property generator for arbitrary object types",
+  "main": "uniqid.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "uniqueid",
+    "unique",
+    "id",
+    "property",
+    "object",
+    "html",
+    "element"
+  ],
+  "license": "MIT"
+}
