@@ -24,17 +24,25 @@
  *
  */
 
+'use strict'
+
 var assert = require('assert');
 var requirejs = require('requirejs');
+var path = require('path');
+
+var mainPath = path.resolve(__dirname,'../uniqid.js')
+
 
 var TEST;
 
 function addTests() {
+  var undefine;
+
   it('should add a uniqueId property to target prototype', function() {
     var a = TEST.targetGenerator();
 
     assert.equal(a.uniqueId, null);
-    TEST.defineUniqueId(TEST.targetGenerator().constructor, { static: true, redefine: true });
+    undefine = TEST.defineUniqueId();
     assert.notEqual(a.uniqueId, null);
     assert.equal(a.uniqueId, a.uniqueId);
   });
@@ -59,15 +67,35 @@ function addTests() {
   });
 
   after(function(done) {
-    delete TEST.targetGenerator().constructor.prototype.uniqueId;
-
+    undefine();
     done();
   });
 }
 
-describe('defineUniqueId [CommonJS]', function(){
+describe('defineUniqueId [CommonJS + format ]', function(){
+  var defineUniqueId = require(mainPath);
+
   TEST = {
-    defineUniqueId: require('../uniqid.js'),
+    defineUniqueId: function() {
+      defineUniqueId(Object, {
+        static: true,
+        redefine: true,
+        format: function(id) {
+          return 'prefix-' + id + '-suffix';
+        }
+      })
+    },
+    targetGenerator: function() { return {} }
+  };
+
+  addTests();
+});
+
+describe('defineUniqueId [CommonJS]', function(){
+  var defineUniqueId = require(mainPath);
+
+  TEST = {
+    defineUniqueId: function() { return defineUniqueId(Object, { static: true, redefine: true }) },
     targetGenerator: function() { return {} }
   };
 
@@ -85,7 +113,7 @@ describe('defineUniqueId [AMD]', function(done) {
 
     requirejs(['define-uniqueid'], function(defineUniqueId) {
       TEST = {
-        defineUniqueId: defineUniqueId,
+        defineUniqueId: function() { return defineUniqueId(Object, { static: true, redefine: true }) },
         targetGenerator: function() { return {} }
       };
 
@@ -99,13 +127,12 @@ describe('defineUniqueId [AMD]', function(done) {
 
 describe('defineUniqueId [DOM]', function() {
 
-
   before(function(done) {
     var jsdom = require('jsdom');
     var fs = require('fs');
     var path = require('path');
 
-    var uniqid = fs.readFileSync(path.resolve(__dirname,'../uniqid.js'), 'utf8');
+    var uniqid = fs.readFileSync(mainPath, 'utf8');
 
     jsdom.env({
       html: '',
@@ -115,7 +142,7 @@ describe('defineUniqueId [DOM]', function() {
           throw new Error('Failed to create jsDOM');
 
         TEST = {
-          defineUniqueId: window.defineUniqueId,
+          defineUniqueId: function() { return window.defineUniqueId(window.HTMLElement, { static: true, redefine: true })},
           targetGenerator: function() { return window.document.createElement('div') }
         };
         done();

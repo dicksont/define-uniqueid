@@ -37,9 +37,10 @@
     opts.static = opts.static || false;
     opts.redefine = opts.redefine || false;
     opts.enumerable = opts.enumerable || false;
-    opts.prefix = opts.prefix || '';
-    opts.suffix = opts.suffix || '';
 
+    if (typeof(opts.format) != 'undefined' && typeof(opts.format) != 'function') {
+      throw new Error('"format" property in option parameter is not a function');
+    }
 
     if (ctor.prototype.hasOwnProperty('uniqueId') && !opts.redefine) {
       throw new Error('Object prototype already has uniqueId property defined.');
@@ -48,7 +49,7 @@
     Object.defineProperty(ctor.prototype, 'uniqueId', {
       get: function() {
         Object.defineProperty(this, 'uniqueId', {
-          value: opts.prefix + generateId() + opts.suffix,
+          value: (opts.format)? opts.format(generateId()) : generateId(),
           writable: false,
           enumerable: opts.enumerable,
           configurable: opts.static
@@ -59,6 +60,13 @@
       enumerable: opts.enumerable,
       configurable: opts.static
     });
+
+
+    function undefine() {
+      delete ctor.prototype['uniqueId'];
+    }
+
+    return undefine;
   }
 
   if (typeof define === 'function' && define.amd) { // Require.js & AMD
