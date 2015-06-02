@@ -25,25 +25,16 @@
  */
 
 var assert = require('assert');
-
 var requirejs = require('requirejs');
-var defineUniqueId;
 
-function test() {
-  var a = {};
-  var b = {};
+var TEST;
 
-  after(function(done) {
-      delete a.uniqueId;
-      delete b.uniqueId;
-      delete Object.prototype.uniqueId;
+function addTests() {
+  it('should add a uniqueId property to target prototype', function() {
+    var a = TEST.targetGenerator();
 
-      done();
-  });
-
-  it('should add a uniqueId property to Object', function() {
     assert.equal(a.uniqueId, null);
-    defineUniqueId(Object, { static: true, redefine: true });
+    TEST.defineUniqueId(TEST.targetGenerator().constructor, { static: true, redefine: true });
     assert.notEqual(a.uniqueId, null);
     assert.equal(a.uniqueId, a.uniqueId);
   });
@@ -52,21 +43,35 @@ function test() {
 
 
     it('should be consistent', function() {
+      var a = TEST.targetGenerator();
       var id = a.uniqueId;
       assert.notEqual(id, null);
       assert.equal(a.uniqueId, id);
     });
 
     it('should be unique', function() {
+      var a = TEST.targetGenerator();
+      var b = TEST.targetGenerator();
+
       assert.notEqual(a.uniqueId, null);
       assert.notEqual(a.uniqueId, b.uniqueId);
     });
   });
+
+  after(function(done) {
+    delete TEST.targetGenerator().constructor.prototype.uniqueId;
+
+    done();
+  });
 }
 
 describe('defineUniqueId [CommonJS]', function(){
-  defineUniqueId = require('../uniqid.js');
-  test();
+  TEST = {
+    defineUniqueId: require('../uniqid.js'),
+    targetGenerator: function() { return {} }
+  };
+
+  addTests();
 });
 
 describe('defineUniqueId [AMD]', function(done) {
@@ -78,11 +83,46 @@ describe('defineUniqueId [AMD]', function(done) {
       }
     });
 
-    requirejs(['define-uniqueid'], function(uniqueFx) {
-      defineUniqueId = uniqueFx;
+    requirejs(['define-uniqueid'], function(defineUniqueId) {
+      TEST = {
+        defineUniqueId: defineUniqueId,
+        targetGenerator: function() { return {} }
+      };
+
       done();
     });
   });
 
-  test();
+  addTests();
+});
+
+
+describe('defineUniqueId [DOM]', function() {
+
+
+  before(function(done) {
+    var jsdom = require('jsdom');
+    var fs = require('fs');
+    var path = require('path');
+
+    var uniqid = fs.readFileSync(path.resolve(__dirname,'../uniqid.js'), 'utf8');
+
+    jsdom.env({
+      html: '',
+      src: [uniqid],
+      loaded: function(errors, window) {
+        if (errors != null)
+          throw new Error('Failed to create jsDOM');
+
+        TEST = {
+          defineUniqueId: window.defineUniqueId,
+          targetGenerator: function() { return window.document.createElement('div') }
+        };
+        done();
+      }
+    });
+
+  });
+
+  addTests();
 });
