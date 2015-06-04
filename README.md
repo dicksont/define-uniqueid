@@ -1,8 +1,10 @@
-###define-uniqueid
-
 [![Build Status](https://travis-ci.org/dicksont/define-uniqueid.svg?branch=master)](https://travis-ci.org/dicksont/define-uniqueid) [![npm version](https://badge.fury.io/js/define-uniqueid.svg)](http://badge.fury.io/js/define-uniqueid) [![Bower version](https://badge.fury.io/bo/define-uniqueid.svg)](http://badge.fury.io/bo/define-uniqueid)
 
-Define-uniqueid is a sequential, unique id generator that can be attached to arbitrary object prototypes.
+Define-uniqueid is a sequential, unique id generator that can be attached to arbitrary object prototypes. We would like to think that the following are its advantages over the alternatives:
+- **Portability** - It works across all the different JavaScript module formats.
+- **Efficiency** - *uniqueId*'s are generated lazily, on-demand. This saves CPU cycles and memory space.
+- **Customizability** - You can add *uniqueId* to more specialized prototypes other than Object. You can customize the *uniqueId* by passing in your own formatting function, in the *defineUniqueId* call.
+
 
 [License](LICENSE)
 
@@ -22,7 +24,7 @@ div.uniqueId;
 ### CommonJS / Node
 ```javascript
 
-var defineUniqueId = require('define-uniqueid').defineUniqueId;
+var defineUniqueId = require('define-uniqueid');
 var undefineFx = defineUniqueId(Object);
 ({}).uniqueId;
 
@@ -43,4 +45,45 @@ requirejs(['define-uniqueid'], function(defineUniqueId) {
   ({}).uniqueId;
 });
 
+
 ```
+
+## Options
+An object containing options can be passed in the defineUniqueId call.
+
+```javascript
+defineUniqueId('Object', {
+  configurable: true,
+  enumerable: true,
+  redefine: true,
+  format: function(id) { return 'obj-' + id; }
+})
+```
+
+### opts.format
+Customize the *uniqueId* by passing in your own formatting function.
+
+```javascript
+defineUniqueId('Object', { format: function(id) { return 'obj-' + id; })
+```
+
+### opts.configurable
+
+Default: *false*
+
+*False* means that the uniqueId property cannot be redefined. *True* means that the property can be redefined in both the object and the prototype object.
+
+
+### opts.enumerable
+
+Default: *false*
+
+*True* means that the uniqueId property can be enumerated.
+
+
+### opts.redefine
+
+Default: *false*
+
+By default, an error is thrown when the Object prototype already has a *defineUniqueId* property. Set this to *true*, to suppress these errors and
+to allow this property to be redefined.

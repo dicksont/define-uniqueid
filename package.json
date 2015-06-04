@@ -1,6 +1,6 @@
 {
   "name": "define-uniqueid",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "uniqueId property generator for arbitrary object types",
   "main": "uniqid.js",
   "dependencies": {},

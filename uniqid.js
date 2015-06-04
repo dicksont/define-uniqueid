@@ -34,7 +34,7 @@
   function defineUniqueId(ctor, opts) {
     opts = opts || {};
 
-    opts.static = opts.static || false;
+    opts.configurable = opts.configurable || false;
     opts.redefine = opts.redefine || false;
     opts.enumerable = opts.enumerable || false;
 
@@ -52,13 +52,13 @@
           value: (opts.format)? opts.format(generateId()) : generateId(),
           writable: false,
           enumerable: opts.enumerable,
-          configurable: opts.static
+          configurable: opts.configurable
         })
 
         return this.uniqueId;
       },
       enumerable: opts.enumerable,
-      configurable: opts.static
+      configurable: opts.configurable
     });
 
 
