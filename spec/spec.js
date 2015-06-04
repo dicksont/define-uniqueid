@@ -78,7 +78,7 @@ describe('defineUniqueId [CommonJS + format ]', function(){
   TEST = {
     defineUniqueId: function() {
       defineUniqueId(Object, {
-        static: true,
+        configurable: true,
         redefine: true,
         format: function(id) {
           return 'prefix-' + id + '-suffix';
@@ -95,7 +95,7 @@ describe('defineUniqueId [CommonJS]', function(){
   var defineUniqueId = require(mainPath);
 
   TEST = {
-    defineUniqueId: function() { return defineUniqueId(Object, { static: true, redefine: true }) },
+    defineUniqueId: function() { return defineUniqueId(Object, { configurable: true, redefine: true }) },
     targetGenerator: function() { return {} }
   };
 
@@ -113,7 +113,7 @@ describe('defineUniqueId [AMD]', function(done) {
 
     requirejs(['define-uniqueid'], function(defineUniqueId) {
       TEST = {
-        defineUniqueId: function() { return defineUniqueId(Object, { static: true, redefine: true }) },
+        defineUniqueId: function() { return defineUniqueId(Object, { configurable: true, redefine: true }) },
         targetGenerator: function() { return {} }
       };
 
@@ -142,7 +142,7 @@ describe('defineUniqueId [DOM]', function() {
           throw new Error('Failed to create jsDOM');
 
         TEST = {
-          defineUniqueId: function() { return window.defineUniqueId(window.HTMLElement, { static: true, redefine: true })},
+          defineUniqueId: function() { return window.defineUniqueId(window.HTMLElement, { configurable: true, redefine: true })},
           targetGenerator: function() { return window.document.createElement('div') }
         };
         done();
