@@ -10,7 +10,7 @@
     "jsdom": "~5.4.3"
   },
   "scripts": {
-    "test": "mocha spec/spec.js"
+    "test": "mocha test/test.js"
   },
   "repository": {
     "type": "git",
