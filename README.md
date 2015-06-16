@@ -98,4 +98,11 @@ This library has been tested with good success on a variety of browsers includin
 - Firefox 30.0 : Windows 8.1
 - Safari 7.0 : OS X Mavericks
 
-Internet Explorer is a confirmed exception. Let me know if your particular browser has issues.
+Internet Explorer is a confirmed exception. You should be able to work around this, by checking for the the presence of IE's doppelganger uniqueID first. Something like this:
+
+```javascript
+var uniqueId = div.uniqueID || div.uniqueId;
+```
+
+
+Let me know if your particular browser has issues.
