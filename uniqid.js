@@ -37,25 +37,27 @@
     opts.configurable = opts.configurable || false;
     opts.redefine = opts.redefine || false;
     opts.enumerable = opts.enumerable || false;
+    opts.property = opts.property || 'uniqueId';
 
     if (typeof(opts.format) != 'undefined' && typeof(opts.format) != 'function') {
       throw new Error('"format" property in option parameter is not a function');
     }
 
-    if (ctor.prototype.hasOwnProperty('uniqueId') && !opts.redefine) {
-      throw new Error('Object prototype already has uniqueId property defined.');
+    if (ctor.prototype.hasOwnProperty(opts.property) && !opts.redefine) {
+      throw new Error('Object prototype already has ' + opts.property + ' property defined.');
     }
 
-    Object.defineProperty(ctor.prototype, 'uniqueId', {
+    Object.defineProperty(ctor.prototype, opts.property, {
       get: function() {
-        Object.defineProperty(this, 'uniqueId', {
-          value: (opts.format)? opts.format(generateId()) : generateId(),
+        var myId = (opts.format)? opts.format(generateId()) : generateId();
+        Object.defineProperty(this, opts.property, {
+          value: myId,
           writable: false,
           enumerable: opts.enumerable,
           configurable: opts.configurable
         })
 
-        return this.uniqueId;
+        return myId;
       },
       enumerable: opts.enumerable,
       configurable: opts.configurable
@@ -63,7 +65,7 @@
 
 
     function undefine() {
-      delete ctor.prototype['uniqueId'];
+      delete ctor.prototype[opts.property];
     }
 
     return undefine;
