@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>define-uniqueid : Mocha Test Runner</title>
+  <link rel="stylesheet" href="/node_modules/mocha/mocha.css" />
+</head>
+<body>
+  <script src="../uniqid.js"></script>
+  <script>
+
+    defineUniqueId(HTMLElement);
+
+    if (document.body.uniqueId != 1) {
+      document.body.style['backgroundColor'] = 'red';
+    } else {
+      document.body.style['backgroundColor'] = 'green';
+    }
+
+  </script>
+</body>
+</html>
