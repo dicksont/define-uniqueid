@@ -60,6 +60,12 @@ defineUniqueId(Object, {
 })
 ```
 
+### opts.property
+Default: *'uniqueId'*
+
+Customize the name of the unique ID property.
+
+
 ### opts.format
 Customize the *uniqueId* by passing in your own formatting function.
 
