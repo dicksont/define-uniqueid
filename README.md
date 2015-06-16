@@ -111,4 +111,4 @@ var uniqueId = div.uniqueID || div.uniqueId;
 ```
 
 
-Let me know if your particular browser has issues.
+Let me know if you come across any problems.
