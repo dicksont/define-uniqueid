@@ -52,7 +52,7 @@ requirejs(['define-uniqueid'], function(defineUniqueId) {
 An object containing options can be passed in the defineUniqueId call.
 
 ```javascript
-defineUniqueId('Object', {
+defineUniqueId(Object, {
   configurable: true,
   enumerable: true,
   redefine: true,
@@ -64,7 +64,7 @@ defineUniqueId('Object', {
 Customize the *uniqueId* by passing in your own formatting function.
 
 ```javascript
-defineUniqueId('Object', { format: function(id) { return 'obj-' + id; })
+defineUniqueId(Object, { format: function(id) { return 'obj-' + id; })
 ```
 
 ### opts.configurable
